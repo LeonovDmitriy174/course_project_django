@@ -1,0 +1,33 @@
+{% extends 'client/base.html' %}
+
+{% block content %}
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h2 class="display-4 fw-normal text-body-emphasis">Мои рассылки</h2>
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'mailing:settings_create' %}">Создать
+        рассылку</a>
+</div>
+<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    {% for object in object_list %}
+    {% if user == object.owner or perms.blog.can_cancel_puplication or user.is_superuser %}
+    <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+                <h2 class="my-0 fw-normal">Создана: {{ object.first_datetime }}</h2>
+            </div>
+            <div class="card-body">
+                {% for item in object.clients.all %}
+                <p class="card-title pricing-card-title">Для: {{ item }}</p>
+                {% endfor %}
+                <p class="card-title pricing-card-title">Периодичность: {{ object.sending }}</p>
+                <p class="card-title pricing-card-title">Завершится: {{ object.end_time }}</p>
+                <p class="card-title pricing-card-title">Автор: {{ object.owner }}</p>
+                <a class="btn btn-primary" href="{% url 'mailing:settings_view' object.pk %}"
+                   role="button">Просмотреть</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}

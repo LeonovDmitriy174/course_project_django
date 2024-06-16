@@ -1,0 +1,18 @@
+{% extends 'client/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <p>Хотите удалить сообщение? {{ object.title }}?</p>
+                    <button type="submit" class="btn btn-success">Удалить</button>
+                    <a class="btn btn-primary" href="{% url 'mailing:list' %}" role="button">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<div class="row text-center">
+    <div class="col-3">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">{{ object.name }} ({{ object.email }})</h4>
+            </div>
+            <div class="card-body">
+                Комментарий: {{ object.comment }}
+            </div>
+            {% if user == client.owner or user.is_superuser %}
+            <a class="btn btn-warning" href="{% url 'client:edit' object.pk %}" role="button">Изменить</a>
+            <a class="btn btn-danger" href="{% url 'client:delete' object.pk %}" role="button">Удалить</a>
+            {% endif %}
+            <a class="btn btn-primary" href="{% url 'client:list' %}" role="button">Назад</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

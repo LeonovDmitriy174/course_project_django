@@ -1,0 +1,18 @@
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    {% if user.is_authenticated %}
+    <link rel="icon" href="data:;base64,=">
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a class="nav-link active" href="{% url 'mailing:home' %}">Главная</a></li>
+        <li><a class="nav-link active" href="{% url 'blog:list' %}">Блог</a></li>
+    </ul>
+    <div class="col-md-3 text-end">
+        <a class="btn btn-outline-primary" href="{% url 'users:profile' %}">Профиль</a>
+        <a class="btn btn-outline-primary" href="{% url 'users:logout' %}">Выйти</a>
+    </div>
+    {% else %}
+    <div class="col-md-3 text-end">
+        <a type="button" class="btn btn-outline-primary me-2" href="{% url 'users:login' %}">Войти</a>
+        <a type="button" class="btn btn-primary" href="{% url 'users:register' %}">Зарегистрироваться</a>
+    </div>
+    {% endif %}
+</header>

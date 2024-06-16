@@ -1,0 +1,21 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-9">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <h5>{{ object.content }}</h5>
+                    <p>{{ object.clients }}</p>
+                    <a class="btn btn-warning" href="{% url 'mailing:edit' object.pk %}" role="button">Изменить</a>
+                    <a class="btn btn-primary" href="{% url 'mailing:list' %}" role="button">Назад</a>
+                    <a class="btn btn-danger" href="{% url 'mailing:delete' object.pk %}" role="button">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

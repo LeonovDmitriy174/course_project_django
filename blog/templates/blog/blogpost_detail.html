@@ -1,0 +1,27 @@
+<!doctype html>
+{% extends 'client/base.html' %}
+{% block content %}
+{% load my_tags %}
+<div class="row text-center">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <img class="card-img-top" src="{{ object.image | media_filter }}">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ object.title }} ({{ object.slug }})</h5>
+                        <p class="card-text">{{ object.body }}</p>
+                        <p class="card-text"><small class="text-body-secondary">Дата создания:
+                            {{ object.created }}</small></p>
+                        <p class="card-text"><small class="text-body-secondary">Количество просмотров:
+                            {{ object.views }}</small></p>
+                        <a class="btn btn-info" href="{% url 'blog:list' %}">Вернуться к списку публикаций</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

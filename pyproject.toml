@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "course-project-web"
+version = "0.1.0"
+description = ""
+authors = ["Dmitriy Leonov <dmitriy.leonov.1993@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "4.2.2"
+psycopg2-binary = "^2.9.9"
+pillow = "^10.3.0"
+ipython = "^8.25.0"
+python-dotenv = "^1.0.1"
+black = "^24.4.2"
+pytz = "^2024.1"
+apscheduler = "^3.10.4"
+django-apscheduler = "^0.6.2"
+pytils = "^0.4.1"
+redis = "^5.0.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

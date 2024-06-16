@@ -1,0 +1,77 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<div class="container">
+    <main>
+        {% if user.is_authenticated %}
+        <div class="row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Мои рассылки</h5>
+                        <a href="{% url 'mailing:settings_list' %}" class="btn btn-primary">Перейти</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Мои клиенты</h5>
+                        <a href="{% url 'client:list' %}" class="btn btn-primary">Перейти</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Мои сообщения</h5>
+                        <a href="{% url 'mailing:list' %}" class="btn btn-primary">Перейти</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Отчет проведенных рассылок</h5>
+                        <a href="{% url 'mailing:mailing_status_list' %}" class="btn btn-primary">Перейти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="py-5 text-center">
+            <h1>Добро пожаловать в сервис рассылок!</h1>
+            <h2>Email-рассылки могут решать следующие задачи:</h2>
+            <p class="lead">- Собрать базу клиентов.
+                - Информировать о новых товарах и услугах.
+                - Предложить акции, скидки, специальные предложения.
+                - Рассказать о новостях, выходе нового контента на сайте.
+                - Собрать обратную связь от клиентов.
+            </p>
+            <p class="lead">Здесь вы можете создать и настроить отправку рассылок для информирования и привлечения
+                клиентов.</p>
+            <p class="lead">
+                <a href="{% url 'mailing:create' %}" class="me-3 py-2 link-body-emphasis text-decoration-none">Создать
+                    рассылку</a>
+            </p>
+            <br>
+            <div class="row">
+                <div class="col-6 text-sm-start">
+                    <li>Количество рассылок на сайте - {{mailing_count}}</li>
+                    <li>Количество активных рассылок - {{is_active_count}}</li>
+                    <li>Количество клиентов - {{clients_count}}</li>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-sm-start">
+                    <a class="nav-link active" href="{% url 'blog:list' %}">Зайдите в наш блог, это только часть
+                        статей</a>
+                    {% for article in random_blog_list %}
+                    <li>{{article.title}}</li>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </main>
+</div>
+{% endblock %}
