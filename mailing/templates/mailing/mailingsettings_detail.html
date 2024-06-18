@@ -12,6 +12,7 @@
                     <p>Для: {{ item }}</p>
                     <p class="card-title pricing-card-title">Периодичность: {{ object.sending }}</p>
                     <p class="card-title pricing-card-title">Статус: {{ object.setting_status }}</p>
+                    <p class="card-title pricing-card-title">Следующий запуск: {{ object.next_datetime }}</p>
                     <p class="card-title pricing-card-title">Завершится: {{ object.end_time }}</p>
                     <p class="card-title pricing-card-title">Автор: {{ object.owner }}</p>
                     {% endfor %}
