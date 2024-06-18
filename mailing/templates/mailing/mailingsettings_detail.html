@@ -5,18 +5,23 @@
         <div class="col-9">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{ object.title }}</h4>
+                    <h4 class="my-0 font-weight-normal"><h5>Создана: {{ object.first_datetime }}</h5></h4>
                 </div>
                 <div class="card-body">
-                    <h5>{{ object.content }}</h5>
                     {% for item in object.clients.all %}
-                    <p>{{ item }}</p>
+                    <p>Для: {{ item }}</p>
+                    <p class="card-title pricing-card-title">Периодичность: {{ object.sending }}</p>
+                    <p class="card-title pricing-card-title">Статус: {{ object.setting_status }}</p>
+                    <p class="card-title pricing-card-title">Завершится: {{ object.end_time }}</p>
+                    <p class="card-title pricing-card-title">Автор: {{ object.owner }}</p>
                     {% endfor %}
                     <a class="btn btn-warning" href="{% url 'mailing:settings_edit' object.pk %}"
                        role="button">Изменить</a>
                     <a class="btn btn-primary" href="{% url 'mailing:settings_list' %}" role="button">Назад</a>
+                    {% if user == object.owner or user.is_superuser %}
                     <a class="btn btn-danger" href="{% url 'mailing:settings_delete' object.pk %}"
                        role="button">Удалить</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
