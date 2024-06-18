@@ -1,19 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
 
-from blog.forms import BlogPostForm, BlogPostModeratorForm
+from blog.forms import BlogPostForm
 from blog.models import BlogPost
 
 
-class BlogPostListView(LoginRequiredMixin, ListView):
+class BlogPostListView(ListView):
     model = BlogPost
 
 
-class BlogPostDetailView(LoginRequiredMixin, DetailView):
+class BlogPostDetailView(DetailView):
     model = BlogPost
 
     def get_object(self, queryset=None):
@@ -32,7 +31,7 @@ class BlogPostCreateView(LoginRequiredMixin, CreateView):
         if form.is_valid:
             new_object = form.save(commit=False)
             new_object.slug = slugify(new_object.title)
-            new_object.instance.user = self.request.user
+            new_object.user = self.request.user
             new_object.save()
             return super().form_valid(form)
 
@@ -45,32 +44,17 @@ class BlogPostUpdateView(LoginRequiredMixin, UpdateView):
         if form.is_valid:
             new_object = form.save(commit=False)
             new_object.slug = slugify(new_object.title)
-            new_object.instance.user = self.request.user
+            new_object.user = self.request.user
             new_object.save()
             return super().form_valid(form)
 
     def get_success_url(self):
         return reverse("blog:view", args=[self.kwargs.get("pk")])
 
-    def get_form_class(self):
-        user = self.request.user
-        if user == self.object.user or user.is_superuser:
-            return BlogPostForm
-        if user.has_perm('blog.can_cancel_puplication'):
-            return BlogPostModeratorForm
-        raise PermissionDenied
-
 
 class BlogPostDeleteView(LoginRequiredMixin, DeleteView):
     model = BlogPost
-    form_class = BlogPostForm
     success_url = reverse_lazy("blog:list")
-
-    def get_form_class(self):
-        user = self.request.user
-        if user == self.object.user or user.is_superuser:
-            return BlogPostForm
-        raise PermissionDenied
 
 
 def toggle_publication(request, pk):
