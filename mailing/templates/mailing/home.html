@@ -2,8 +2,8 @@
 {% block content %}
 <div class="container">
     <main>
-        {% if user.is_authenticated %}
         <div class="row">
+            {% if user.is_authenticated or perms.mailing.can_change_setting_status or perms.mailing.add_mailingmessage %}
             <div class="col-sm-6 mb-3 mb-sm-0">
                 <div class="card">
                     <div class="card-body">
@@ -20,6 +20,8 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+            {% if user.is_authenticated or perms.mailing.add_mailingmessage %}
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
@@ -36,8 +38,8 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
-        {% else %}
         <div class="py-5 text-center">
             <h1>Добро пожаловать в сервис рассылок!</h1>
             <h2>Email-рассылки могут решать следующие задачи:</h2>
@@ -49,10 +51,12 @@
             </p>
             <p class="lead">Здесь вы можете создать и настроить отправку рассылок для информирования и привлечения
                 клиентов.</p>
+            {% if perms.mailing.add_mailingsettings %}
             <p class="lead">
                 <a href="{% url 'mailing:create' %}" class="me-3 py-2 link-body-emphasis text-decoration-none">Создать
                     рассылку</a>
             </p>
+            {% endif %}
             <br>
             <div class="row">
                 <div class="col-6 text-sm-start">
@@ -66,12 +70,12 @@
                     <a class="nav-link active" href="{% url 'blog:list' %}">Зайдите в наш блог, это только часть
                         статей</a>
                     {% for article in random_blog_list %}
-                    <li>{{article.title}}</li>
+                    <h1><a href="{% url 'blog:view' article.pk %}" class="nav-link px-2 text-body-dark">{{ article.title }}</a></h1>
+                    <p>{{article.body}}</p>
                     {% endfor %}
                 </div>
             </div>
         </div>
-        {% endif %}
     </main>
 </div>
 {% endblock %}
