@@ -1,0 +1,22 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-9">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object.last_datetime }}</h4>
+                </div>
+                <div class="card-body">
+                    <h5>Статус: {{ object.status }}</h5>
+                    <h5>Ответ почтового сервера: {{ object.mailing_response }}</h5>
+                    <h5>Рассылка: {{ object.mailing }}</h5>
+                    <h5>Автор: {{ object.owner }}</h5>
+                    <a class="btn btn-success" href="{% url 'mailing:mailing_status_list' %}"
+                       role="button">Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
