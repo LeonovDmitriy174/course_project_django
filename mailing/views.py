@@ -12,7 +12,7 @@ from mailing.models import MailingSettings, MailingMessage, MailingStatus
 from mailing.services import get_mailings_from_cache, get_messages_from_cache
 
 
-class HomeTemplateView(LoginRequiredMixin, TemplateView):
+class HomeTemplateView(TemplateView):
     """Контроллер для главной страницы"""
     template_name = 'mailing/home.html'
 
@@ -67,7 +67,10 @@ class MailingMessageListView(LoginRequiredMixin, ListView):
     model = MailingMessage
 
     def get_queryset(self):
-        return get_messages_from_cache()
+        queryset = get_messages_from_cache()
+        if not (self.request.user.is_superuser or self.request.user.has_perm('mailing.view_mailingmessage')):
+            queryset = queryset.filter(owner=self.request.user)
+        return queryset
 
 
 class MailingMessageDetailView(LoginRequiredMixin, DetailView):
@@ -81,6 +84,7 @@ class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         mailing = form.save()
+        mailing.next_datetime = mailing.first_datetime
         mailing.owner = self.request.user
         mailing.save()
         return super().form_valid(form)
@@ -114,7 +118,10 @@ class MailingSettingsListView(LoginRequiredMixin, ListView):
     model = MailingSettings
 
     def get_queryset(self):
-        return get_mailings_from_cache()
+        queryset = get_mailings_from_cache()
+        if not (self.request.user.is_superuser or self.request.user.has_perm('mailing.can_change_setting_status')):
+            queryset = queryset.filter(owner=self.request.user)
+        return queryset
 
 
 class MailingSettingsDetailView(LoginRequiredMixin, DetailView):
@@ -128,6 +135,12 @@ class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
 
 class MailingStatusListView(LoginRequiredMixin, ListView):
     model = MailingStatus
+
+    def get_queryset(self):
+        queryset = MailingStatus.objects.all()
+        if not (self.request.user.is_superuser or self.request.user.has_perm('mailing.can_change_setting_status')):
+            queryset = queryset.filter(owner=self.request.user)
+        return queryset
 
 
 class MailingStatusDetailView(LoginRequiredMixin, DetailView):
