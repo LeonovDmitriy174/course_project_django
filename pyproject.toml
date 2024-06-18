@@ -18,6 +18,7 @@ apscheduler = "^3.10.4"
 django-apscheduler = "^0.6.2"
 pytils = "^0.4.1"
 redis = "^5.0.6"
+python-dateutil = "^2.9.0.post0"
 
 
 [build-system]
