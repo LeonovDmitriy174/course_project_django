@@ -22,4 +22,5 @@ urlpatterns = [
     path('settings/<int:pk>/update/', MailingSettingsUpdateView.as_view(), name='settings_edit'),
     path('settings/<int:pk>/delete/', MailingSettingsDeleteView.as_view(), name='settings_delete'),
     path('status_list', MailingStatusListView.as_view(), name='mailing_status_list'),
+    path('status_detail/<int:pk>', MailingStatusDetailView.as_view(), name='mailing_status_detail'),
 ]
