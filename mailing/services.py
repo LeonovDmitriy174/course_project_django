@@ -42,12 +42,12 @@ def send_mailing():
     current_time = datetime.now(zone)
 
     # Собираем рассылки, которые необходимо отправить
-    mailing_settings = MailingSettings.objects.filter(first_datetime__lte=current_time).filter(
+    mailing_settings = MailingSettings.objects.filter(next_datetime__lte=current_time).filter(
         setting_status__in=['Create', 'Started'])
     for mailing in mailing_settings:
         # Устанавливаем время следующей рассылки, если оно еще не определено
-        if mailing.first_datetime is None:
-            mailing.first_datetime = current_time
+        if mailing.next_datetime is None:
+            mailing.next_datetime = current_time
         # Подготавливаем данные для отправки письма
         title = mailing.message.title
         content = mailing.message.content
@@ -55,13 +55,13 @@ def send_mailing():
         mailing.save()
         try:
             # Проверяем, не истекло ли время рассылки
-            if mailing.end_time < mailing.first_datetime:
-                mailing.first_datetime = current_time
+            if mailing.end_time < mailing.next_datetime:
+                mailing.next_datetime = current_time
                 mailing.settings_status = 'Done'
                 mailing.save()
                 continue
             # Проверяем, требуется ли отправить рассылку
-            if mailing.first_datetime <= current_time:
+            if mailing.next_datetime <= current_time:
                 # Отправляем письмо
                 server_response = send_mail(
                     subject=title,
@@ -77,13 +77,13 @@ def send_mailing():
 
                 # Определяем время следующей рассылки
                 if mailing.sending == 'Daily':
-                    mailing.first_datetime = current_time + timedelta(days=1)
+                    mailing.next_datetime = current_time + timedelta(days=1)
 
                 elif mailing.sending == 'Weekly':
-                    mailing.first_datetime = current_time + timedelta(days=7)
+                    mailing.next_datetime = current_time + timedelta(days=7)
 
                 elif mailing.sending == 'Monthly':
-                    mailing.first_datetime = current_time + relativedelta(months=1)
+                    mailing.next_datetime = current_time + relativedelta(months=1)
 
             mailing.save()
 
