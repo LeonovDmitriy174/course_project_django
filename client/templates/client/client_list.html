@@ -3,11 +3,12 @@
 <div class="row text-center">
     <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
         <h2 class="display-4 fw-normal text-body-emphasis">Мои клиенты</h2>
+        {% if user.is_authenticated %}
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'client:create' %}">Добавить
             клиента</a>
+        {% endif %}
     </div>
     {% for client in object_list %}
-    {% if user == client.owner or perms.blog.can_cancel_puplication or user.is_superuser %}
     <div class="col-3">
         <div class="card mb-4 box-shadow">
             <div class="card-header">
@@ -24,7 +25,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
