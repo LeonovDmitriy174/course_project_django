@@ -23,11 +23,13 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
         blog_list = list(BlogPost.objects.all())
         random.shuffle(blog_list)
         random_blog_list = blog_list[:3]
+        mailings = MailingSettings.objects.all()
         context_data = {
             'mailing_count': mailing_count,
-            'is_active': is_active_count,
+            'is_active_count': is_active_count,
             'clients_count': clients_count,
             'random_blog_list': random_blog_list,
+            'mailings': mailings,
         }
         return context_data
 
@@ -38,7 +40,9 @@ class MailingMessageCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('mailing:list')
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user
+        mailingmessage = form.save()
+        mailingmessage.owner = self.request.user
+        mailingmessage.save()
         return super().form_valid(form)
 
 
@@ -58,12 +62,6 @@ class MailingMessageDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingMessage
     success_url = reverse_lazy('mailing:list')
 
-    def get_form_class(self):
-        user = self.request.user
-        if user == self.object.owner or user.is_superuser:
-            return MailingMessageForm
-        raise PermissionDenied
-
 
 class MailingMessageListView(LoginRequiredMixin, ListView):
     model = MailingMessage
@@ -82,7 +80,9 @@ class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('mailing:settings_list')
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user
+        mailing = form.save()
+        mailing.owner = self.request.user
+        mailing.save()
         return super().form_valid(form)
 
     def get_form_kwargs(self):
@@ -125,12 +125,10 @@ class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingSettings
     success_url = reverse_lazy('mailing:settings_list')
 
-    def get_form_class(self):
-        user = self.request.user
-        if user == self.object.owner:
-            return MailingSettingsForm
-        raise PermissionDenied
-
 
 class MailingStatusListView(LoginRequiredMixin, ListView):
+    model = MailingStatus
+
+
+class MailingStatusDetailView(LoginRequiredMixin, DetailView):
     model = MailingStatus
