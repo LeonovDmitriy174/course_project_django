@@ -20,7 +20,6 @@
                 </thead>
                 <tbody>
                 {% for status in object_list %}
-                {% if user == status.owner or perms.mailing.can_change_setting_status or user.is_superuser %}
                 <tr>
                     <td>{{status.pk}}</td>
                     <td>{{status.mailing}}</td>
@@ -28,7 +27,6 @@
                     <td>{{status.status}}</td>
                     <td>{{status.mailing_response}}</td>
                 </tr>
-                {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
