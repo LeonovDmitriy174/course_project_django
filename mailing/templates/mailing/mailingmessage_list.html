@@ -8,7 +8,6 @@
 </div>
 <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
     {% for mail in object_list %}
-    {% if user == mail.owner or perms.mailing.view_mailingmessage or user.is_superuser %}
     <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm">
             <div class="card-header py-3">
@@ -21,7 +20,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
     {% endfor %}
 </div>
 
