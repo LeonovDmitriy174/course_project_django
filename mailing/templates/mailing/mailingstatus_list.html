@@ -20,11 +20,11 @@
                 </thead>
                 <tbody>
                 {% for status in object_list %}
-                {% if user == status.owner or user.is_superuser %}
+                {% if user == status.owner or perms.mailing.can_change_setting_status or user.is_superuser %}
                 <tr>
                     <td>{{status.pk}}</td>
                     <td>{{status.mailing}}</td>
-                    <td>{{status.last_datetime}}</td>
+                    <td><a href="{% url 'mailing:mailing_status_detail' status.pk %}" class="nav-link px-2 text-body-dark">{{ status.last_datetime }}</a></td>
                     <td>{{status.status}}</td>
                     <td>{{status.mailing_response}}</td>
                 </tr>
