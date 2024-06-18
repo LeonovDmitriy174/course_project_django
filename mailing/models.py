@@ -44,6 +44,7 @@ class MailingSettings(models.Model):
     first_datetime = models.DateTimeField(
         auto_now_add=True, verbose_name="Начало рассылки"
     )
+    next_datetime = models.DateTimeField(verbose_name="Следующая дата отправки", **NULLABLE)
     end_time = models.DateTimeField(verbose_name="Конец рассылки", **NULLABLE)
     sending = models.CharField(
         max_length=50, choices=FREQUENCY_CHOICES, verbose_name="Период рассылки"
