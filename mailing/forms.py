@@ -22,6 +22,12 @@ class MailingSettingsForm(StileFormMixin, forms.ModelForm):
 
 
 class MailingSettingsModeratorForm(StileFormMixin, forms.ModelForm):
+    """Форма для модераторов"""
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
+        user = self.request.user
+        super().__init__(*args, **kwargs)
+
     class Meta:
         model = MailingSettings
         fields = ('setting_status',)
@@ -32,5 +38,3 @@ class MailingMessageForm(StileFormMixin, forms.ModelForm):
     class Meta:
         model = MailingMessage
         fields = ('title', 'content',)
-
-
