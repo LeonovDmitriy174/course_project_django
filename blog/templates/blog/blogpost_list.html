@@ -2,9 +2,11 @@
 {% extends 'client/base.html' %}
 {% block content %}
 {% load my_tags %}
+{% if perms.blog.add_blogpost %}
 <p>
     <a class="btn btn-primary" href="{% url 'blog:create' %}">Добавить запись</a>
 </p>
+{% endif %}
 <div class="row text-center">
     <div class="row row-cols-1 row-cols-md-3 g-6">
         {% for post in object_list %}
@@ -32,6 +34,8 @@
                             <a href="{% url 'blog:view' post.pk %}" type="button" class="btn btn-danger">Посмотреть</a>
                             {% if perms.blog.change_blogpost or user.is_superuser%}
                             <a href="{% url 'blog:update' post.pk %}" type="button" class="btn btn-warning">Изменить</a>
+                            {% endif %}
+                            {% if perms.blog.delete_blogpost or user.is_superuser%}
                             <a href="{% url 'blog:delete' post.pk %}" type="button" class="btn btn-success">Удалить</a>
                             {% if post.published %}
                             <a class="btn btn-light" href="{% url 'blog:toggle_publication' post.pk %}">Отменить
