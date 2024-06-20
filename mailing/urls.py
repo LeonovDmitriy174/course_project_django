@@ -5,7 +5,7 @@ from mailing.apps import MailingConfig
 from mailing.views import MailingMessageListView, MailingMessageCreateView, MailingMessageDetailView, \
     MailingMessageUpdateView, MailingMessageDeleteView, MailingSettingsListView, MailingSettingsCreateView, \
     MailingSettingsDetailView, MailingSettingsUpdateView, MailingSettingsDeleteView, HomeTemplateView, \
-    MailingStatusListView
+    MailingStatusListView, MailingStatusDetailView
 
 app_name = MailingConfig.name
 
